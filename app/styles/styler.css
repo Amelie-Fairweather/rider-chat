@@ -1,0 +1,60 @@
+.request{
+  background:pink;
+  color:white;
+  padding: 5px;
+}
+
+a.button {
+  background-color: white;
+  border: none;
+  color: pink;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+.data{
+  padding-top: 20px;
+}
+.middle{
+  text-align:center;
+}
+body{
+  text-align:center;
+}
+
+#snamey {
+  margin-bottom: 60px;
+  color: rgba(1, 1, 1, 0.7);
+}
+#snamey  {
+  font-weight: bold;
+  font-size: 4em;
+  transition: all 60ms;
+}
+#snamey :hover {
+  font-size: 20px;
+  font-size-adjust: 10px;
+}
+.heads{
+  font-size: 20px;
+  padding-top:30px;
+  padding-bottom:50px;
+  background:pink;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: rgba(1, 1, 1, 0.7)
+}
+.text{
+  padding-top:60px;
+  padding-bottom:30px;
+  font-size:18px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-style: normal;
+  color: rgba(1, 1, 1, 0.7)
+} 

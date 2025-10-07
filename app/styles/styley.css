@@ -1,0 +1,68 @@
+a.button {
+  background-color: white;
+  border: none;
+  color: pink;
+  padding: 16px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+}
+
+#snameys {
+  margin-bottom: 60px;
+  color: rgba(1, 1, 1, 0.7);
+}
+#snameys  {
+  font-weight: bold;
+  font-size: 4em;
+  transition: all 60ms;
+}
+#snameys :hover {
+  font-size: 20px;
+  font-size-adjust: 10px;
+}
+
+.head{
+  font-size: 20px;
+  padding-top:30px;
+  padding-bottom:70px;
+  background:pink;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: rgba(1, 1, 1, 0.7)
+}
+body{
+  text-align: center;
+  color: rgba(1, 1, 1, 0.7)
+}
+.middle{
+  padding-top: 30px;
+  padding-bottom:20px;
+  font-family: "Roboto", sans-serif;
+}
+.container{
+  padding-left: 200px;
+  padding-right:200px;
+}
+.text{
+  padding-bottom:50px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-style: normal;
+  color: rgba(1, 1, 1, 0.7)
+}
+.bottom{
+  padding-top: 30px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-style: normal;
+  color: rgba(1, 1, 1, 0.7)
+}
+.sign{
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-style: normal;
+  color: rgba(1, 1, 1, 0.7);
+  padding-top: 30px;
+} 

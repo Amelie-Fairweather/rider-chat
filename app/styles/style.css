@@ -1,0 +1,157 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+
+body{
+  text-align:center;
+}
+
+.what{
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  padding-top: 60px;
+  padding-bottom: 10px;
+  color: rgba(1, 1, 1, 0.7)
+}
+
+.header{
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background:pink;
+  padding-bottom: 60px;
+  padding-top: 40px;
+  color: rgba(1, 1, 1, 0.7)
+}
+
+a.button {
+  background-color: white;
+  color: pink;
+  border: 2px solid pink;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 10px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background 0.3s, color 0.3s;
+  display: inline-block;
+  margin: 8px 0;
+}
+
+a.button:hover {
+  background-color: pink;
+  color: white;
+}
+
+.button {
+  background-color: pink;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 8px 0;
+  text-align: center;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 4px 2px;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  border: 2px solid pink;
+  min-width: 140px;
+  min-height: 32px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border-radius: 4px;
+}
+
+.button:hover {
+  background-color: white;
+  color: pink;
+  border: 2px solid pink;
+  font-weight: bold;
+  box-shadow: 0 4px 16px rgba(255,192,203,0.15);
+}
+
+input[type="submit"] {
+  background-color: pink;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+input[type="submit"]:hover {
+  background-color: white;
+  color: pink;
+}
+
+.middle{
+  padding-bottom: 40px;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-style: normal;
+  color: rgba(1, 1, 1, 0.7)
+}
+
+spacer{
+  padding: 20px 20px;
+}
+
+.container{
+  padding-left: 200px;
+  padding-right:200px;
+}
+.container2{
+  padding-left: 200px;
+  padding-right:200px;
+}
+.header2{
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  background:pink;
+  padding-top: 10px;
+  color: rgba(1, 1, 1, 0.7);
+  font-size: 30px;
+}
+.buttons{
+
+  padding-bottom: 100px;
+}
+h1{
+  font-size: 80px;
+}
+
+#sname {
+  margin-top: 100px;
+  margin-bottom: 70px;
+  color: rgba(1, 1, 1, 0.7);
+}
+#sname h1 {
+  font-weight: bold;
+  font-size: 110px;
+  transition: all 500ms;
+}
+#sname h1:hover {
+  font-size: 150px;
+  font-size-adjust: 20px;
+}
+
+#snames {
+  margin-top: 5px;
+  margin-bottom: 30px;
+  color: rgba(1, 1, 1, 0.7);
+}
+#snames  {
+  font-weight: bold;
+  font-size: 4em;
+  transition: all 100ms;
+}
+#snames :hover {
+  font-size: 20px;
+  font-size-adjust: 10px;
+} 
