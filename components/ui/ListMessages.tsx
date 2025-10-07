@@ -1,11 +1,16 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { supabaseBrowser } from '@/lib/supabase/browser';
+import type { Tables } from '@/lib/types/supabase';
 
 const PAGE_SIZE = 20;
 
+type Message = Tables<'messages'> & {
+  display_name?: string;
+};
+
 export default function ListMessages() {
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -58,7 +63,6 @@ export default function ListMessages() {
     return () => {
       supabaseBrowser.removeChannel(channel);
     };
-    // eslint-disable-next-line
   }, []);
 
   const handleDelete = async (id: string) => {

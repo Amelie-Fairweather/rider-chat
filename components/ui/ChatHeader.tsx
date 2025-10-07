@@ -12,7 +12,7 @@ export default function ChatHeader({ user }: { user: User | undefined }) {
 
   useEffect(() => {
     const channel = supabaseBrowser.channel('online-users');
-    let onlineClients = new Set<string>();
+    const onlineClients = new Set<string>();
     onlineClients.add(clientId);
 
     // Respond to "who_is_online" requests
