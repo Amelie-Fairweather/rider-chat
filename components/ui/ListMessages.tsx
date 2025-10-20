@@ -6,7 +6,9 @@ import type { Tables } from '@/lib/types/supabase';
 const PAGE_SIZE = 20;
 
 type Message = Tables<'messages'> & {
-  display_name?: string;
+  users?: {
+    display_name: string | null;
+  };
 };
 
 export default function ListMessages() {
@@ -20,7 +22,10 @@ export default function ListMessages() {
     setLoading(true);
     const { data, error } = await supabaseBrowser
       .from('messages')
-      .select('*')
+      .select(`
+      *,
+      users!messages_send_by_fkey(display_name)
+    `)
       .order('created_at', { ascending: false })
       .limit(PAGE_SIZE);
     setLoading(false);
@@ -37,7 +42,10 @@ export default function ListMessages() {
     const oldest = messages[0].created_at;
     const { data, error } = await supabaseBrowser
       .from('messages')
-      .select('*')
+      .select(`
+      *,
+      users!messages_send_by_fkey(display_name)
+    `)
       .lt('created_at', oldest)
       .order('created_at', { ascending: false })
       .limit(PAGE_SIZE);
@@ -102,7 +110,7 @@ export default function ListMessages() {
           <div className="w-10 h-10 bg-pink-200 rounded-full"></div>
           <div className="flex-1">
             <div className="flex items-center gap-1">
-              <h1 className="font-bold text-sm">{msg.display_name || 'User'}</h1>
+              <h1 className="font-bold text-sm">{msg.users?.display_name || 'User'}</h1>
               <span className="text-xs text-gray-500 dark:text-gray-400">
                 {new Date(msg.created_at).toLocaleTimeString()}
               </span>
