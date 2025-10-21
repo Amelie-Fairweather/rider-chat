@@ -6,14 +6,15 @@ import ChatInput from "@/components/ui/ChatInput";
 import ListMessages from "@/components/ui/ListMessages";
 
 interface PageProps {
-  searchParams: { room?: string };
+  searchParams: Promise<{ room?: string }>;
 }
 
 export default async function Page({ searchParams }: PageProps) {
   const supabase = await supabaseServer();
   const { data } = await supabase.auth.getUser();
   const user = data.user ?? undefined;
-  const roomName = searchParams.room;
+  const resolvedSearchParams = await searchParams;
+  const roomName = resolvedSearchParams.room;
 
   return (
     <>

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabaseBrowser } from '@/lib/supabase/browser';
 import type { Tables } from '@/lib/types/supabase';
 
@@ -22,7 +22,7 @@ export default function ListMessages({ roomName }: ListMessagesProps) {
   const [loading, setLoading] = useState(false);
 
   // Fetch the latest messages (for initial load)
-  const fetchLatestMessages = async () => {
+  const fetchLatestMessages = useCallback(async () => {
     setLoading(true);
     let query = supabaseBrowser
       .from('messages')
@@ -47,7 +47,7 @@ export default function ListMessages({ roomName }: ListMessagesProps) {
     // Reverse so newest is at the bottom
     setMessages((data || []).reverse());
     setHasMore((data?.length || 0) === PAGE_SIZE);
-  };
+  }, [roomName]);
 
   // Fetch older messages (for pagination)
   const fetchOlderMessages = async () => {
@@ -91,7 +91,7 @@ export default function ListMessages({ roomName }: ListMessagesProps) {
         { event: '*', schema: 'public', table: 'messages' },
         (payload) => {
           // Only refetch if the message is for the current room
-          const messageRoom = (payload.new as any)?.room_name || (payload.old as any)?.room_name;
+          const messageRoom = (payload.new as { room_name?: string })?.room_name || (payload.old as { room_name?: string })?.room_name;
           if (roomName) {
             if (messageRoom === roomName) {
               fetchLatestMessages();
@@ -107,7 +107,7 @@ export default function ListMessages({ roomName }: ListMessagesProps) {
     return () => {
       supabaseBrowser.removeChannel(channel);
     };
-  }, [roomName]);
+  }, [roomName, fetchLatestMessages]);
 
   const handleDelete = async (id: string) => {
     const { error } = await supabaseBrowser.from('messages').delete().eq('id', id);
