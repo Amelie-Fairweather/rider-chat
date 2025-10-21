@@ -13,6 +13,8 @@ export default function ChatHeader({ user }: { user: User | undefined }) {
   const [email, setEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [showVerificationField, setShowVerificationField] = useState(false);
+  const [displayName, setDisplayName] = useState("");
+  const [showDisplayNameField, setShowDisplayNameField] = useState(false);
 
   useEffect(() => {
     const channel = supabaseBrowser.channel('online-users');
@@ -109,11 +111,46 @@ export default function ChatHeader({ user }: { user: User | undefined }) {
     });
     
     if (!error) {
-      setShowLoginPopup(false);
-      setEmail("");
-      setVerificationCode("");
-      setShowVerificationField(false);
-      router.refresh();
+      // Show display name input instead of closing popup
+      setShowDisplayNameField(true);
+    }
+  };
+
+  const handleSetDisplayName = async () => {
+    if (!displayName.trim()) return;
+    
+    const supabase = supabaseBrowser;
+    const { data: { user } } = await supabase.auth.getUser();
+    
+    if (user) {
+      // Update user metadata first
+      const { error: updateError } = await supabase.auth.updateUser({
+        data: { display_name: displayName.trim() }
+      });
+      
+      if (!updateError) {
+        // Then update the users table
+        const { error: dbError } = await supabase
+          .from("users")
+          .upsert([
+            {
+              id: user.id,
+              display_name: displayName.trim(),
+              avatar_url: user.user_metadata?.avatar_url || "",
+            },
+          ]);
+        
+        if (!dbError) {
+          // Close popup and refresh
+          setShowLoginPopup(false);
+          setEmail("");
+          setVerificationCode("");
+          setShowVerificationField(false);
+          setDisplayName("");
+          setShowDisplayNameField(false);
+          router.refresh();
+        }
+      }
     }
   };
 
@@ -177,7 +214,7 @@ export default function ChatHeader({ user }: { user: User | undefined }) {
                 Send
               </button>
               
-              {showVerificationField && (
+              {showVerificationField && !showDisplayNameField && (
                 <div className="space-y-4">
                   <input
                     type="text"
@@ -195,6 +232,36 @@ export default function ChatHeader({ user }: { user: User | undefined }) {
                   </button>
                 </div>
               )}
+
+              {showDisplayNameField && (
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-white mb-2">
+                      Welcome! 🎉
+                    </h3>
+                    <p className="text-pink-100 text-sm mb-4">
+                      Please choose a display name for the chat
+                    </p>
+                  </div>
+                  
+                  <input
+                    type="text"
+                    placeholder="Enter your display name"
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    className="w-full p-3 rounded border border-pink-400 focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    maxLength={50}
+                  />
+                  
+                  <button
+                    onClick={handleSetDisplayName}
+                    disabled={!displayName.trim()}
+                    className="w-full bg-white text-pink-300 px-4 py-2 rounded hover:bg-pink-100 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Set Display Name
+                  </button>
+                </div>
+              )}
               
               <button
                 onClick={() => {
@@ -202,6 +269,8 @@ export default function ChatHeader({ user }: { user: User | undefined }) {
                   setEmail("");
                   setVerificationCode("");
                   setShowVerificationField(false);
+                  setDisplayName("");
+                  setShowDisplayNameField(false);
                 }}
                 className="w-full bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600 font-semibold"
               >

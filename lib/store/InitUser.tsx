@@ -17,7 +17,7 @@ export default function InitUser({user}:{user:User|undefined}) {
               .upsert([
                 {
                   id: user.id,
-                  display_name: user.user_metadata?.full_name || user.email,
+                  display_name: user.user_metadata?.display_name || user.user_metadata?.full_name || user.email,
                   avatar_url: user.user_metadata?.avatar_url || "",
                 },
               ])
