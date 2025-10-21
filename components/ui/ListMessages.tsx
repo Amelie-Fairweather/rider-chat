@@ -11,7 +11,11 @@ type Message = Tables<'messages'> & {
   };
 };
 
-export default function ListMessages() {
+interface ListMessagesProps {
+  roomName?: string;
+}
+
+export default function ListMessages({ roomName }: ListMessagesProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
@@ -20,7 +24,7 @@ export default function ListMessages() {
   // Fetch the latest messages (for initial load)
   const fetchLatestMessages = async () => {
     setLoading(true);
-    const { data, error } = await supabaseBrowser
+    let query = supabaseBrowser
       .from('messages')
       .select(`
       *,
@@ -28,6 +32,16 @@ export default function ListMessages() {
     `)
       .order('created_at', { ascending: false })
       .limit(PAGE_SIZE);
+    
+    // Filter by room if roomName is provided
+    if (roomName) {
+      query = query.eq('room_name', roomName);
+    } else {
+      // If no room specified, only show messages without a room (null)
+      query = query.is('room_name', null);
+    }
+    
+    const { data, error } = await query;
     setLoading(false);
     if (error) return;
     // Reverse so newest is at the bottom
@@ -40,7 +54,7 @@ export default function ListMessages() {
     if (!messages.length) return;
     setLoading(true);
     const oldest = messages[0].created_at;
-    const { data, error } = await supabaseBrowser
+    let query = supabaseBrowser
       .from('messages')
       .select(`
       *,
@@ -49,6 +63,16 @@ export default function ListMessages() {
       .lt('created_at', oldest)
       .order('created_at', { ascending: false })
       .limit(PAGE_SIZE);
+    
+    // Filter by room if roomName is provided
+    if (roomName) {
+      query = query.eq('room_name', roomName);
+    } else {
+      // If no room specified, only show messages without a room (null)
+      query = query.is('room_name', null);
+    }
+    
+    const { data, error } = await query;
     setLoading(false);
     if (error) return;
     // Prepend older messages (reverse to keep order)
@@ -65,13 +89,25 @@ export default function ListMessages() {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'messages' },
-        fetchLatestMessages
+        (payload) => {
+          // Only refetch if the message is for the current room
+          const messageRoom = (payload.new as any)?.room_name || (payload.old as any)?.room_name;
+          if (roomName) {
+            if (messageRoom === roomName) {
+              fetchLatestMessages();
+            }
+          } else {
+            if (messageRoom === null) {
+              fetchLatestMessages();
+            }
+          }
+        }
       )
       .subscribe();
     return () => {
       supabaseBrowser.removeChannel(channel);
     };
-  }, []);
+  }, [roomName]);
 
   const handleDelete = async (id: string) => {
     const { error } = await supabaseBrowser.from('messages').delete().eq('id', id);
@@ -94,6 +130,13 @@ export default function ListMessages() {
 
   return (
     <div className="space-y-7">
+      {roomName && (
+        <div className="text-center py-2">
+          <span className="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">
+            Room: {roomName}
+          </span>
+        </div>
+      )}
       {hasMore && (
         <div className="flex justify-center mb-2">
           <button

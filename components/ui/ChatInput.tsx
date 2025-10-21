@@ -4,7 +4,11 @@ import { supabaseBrowser } from "@/lib/supabase/browser";
 import React from 'react'
 import { toast } from 'sonner';
 
-export default function ChatInput() {
+interface ChatInputProps {
+  roomName?: string;
+}
+
+export default function ChatInput({ roomName }: ChatInputProps) {
   const [loading, setLoading] = useState(false);
 
   const handleSendMessage = async (text: string) => {
@@ -17,7 +21,11 @@ export default function ChatInput() {
     }
     const { error } = await supabaseBrowser
       .from("messages")
-      .insert([{ text, send_by: user.id }]);
+      .insert([{ 
+        text, 
+        send_by: user.id,
+        room_name: roomName || null
+      }]);
     setLoading(false);
     if (error) {
       toast.message(error.message);

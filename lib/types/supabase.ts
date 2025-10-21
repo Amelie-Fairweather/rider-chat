@@ -14,6 +14,7 @@ export type Database = {
           created_at: string
           id: string
           is_edit: boolean
+          room_name: string | null
           send_by: string
           text: string
         }
@@ -21,6 +22,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_edit?: boolean
+          room_name?: string | null
           send_by?: string
           text: string
         }
@@ -28,6 +30,7 @@ export type Database = {
           created_at?: string
           id?: string
           is_edit?: boolean
+          room_name?: string | null
           send_by?: string
           text?: string
         }

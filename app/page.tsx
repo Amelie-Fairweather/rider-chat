@@ -5,10 +5,15 @@ import InitUser from "@/lib/store/InitUser";
 import ChatInput from "@/components/ui/ChatInput";
 import ListMessages from "@/components/ui/ListMessages";
 
-export default async function Page() {
+interface PageProps {
+  searchParams: { room?: string };
+}
+
+export default async function Page({ searchParams }: PageProps) {
   const supabase = await supabaseServer();
   const { data } = await supabase.auth.getUser();
   const user = data.user ?? undefined;
+  const roomName = searchParams.room;
 
   return (
     <>
@@ -16,11 +21,11 @@ export default async function Page() {
         <div className="h-full border border-gray-200 dark:border-gray-700 rounded-md flex flex-col overflow-y-auto">
           <ChatHeader user={user} />
           <div className="flex-1 flex flex-col p-5 bg-white dark:bg-[#18181b]">
-            <ListMessages />
+            <ListMessages roomName={roomName} />
           </div>
           <div className="border-t border-gray-200 dark:border-gray-700 my-2"></div>
           <div className="p-5 pt-0">
-            <ChatInput />
+            <ChatInput roomName={roomName} />
           </div>
         </div>
       </div>
