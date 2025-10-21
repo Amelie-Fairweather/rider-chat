@@ -141,14 +141,25 @@ export default function ChatHeader({ user }: { user: User | undefined }) {
           ]);
         
         if (!dbError) {
-          // Close popup and refresh
+          // Send welcome message
+          await supabase
+            .from("messages")
+            .insert([
+              {
+                text: `${displayName.trim()} is readdyyyy to rideeeee! 💗⭐`,
+                send_by: user.id,
+                room_name: null
+              }
+            ]);
+          
+          // Close popup and force refresh
           setShowLoginPopup(false);
           setEmail("");
           setVerificationCode("");
           setShowVerificationField(false);
           setDisplayName("");
           setShowDisplayNameField(false);
-          router.refresh();
+          window.location.reload();
         }
       }
     }
